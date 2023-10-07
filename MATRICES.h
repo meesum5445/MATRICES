@@ -4,9 +4,12 @@ using namespace std;
 #include<fstream>
 class Matrix
 {
-	int** Vs;
+	float** Vs;
 	int rows;
 	int cols;
+	Matrix multiply_row(const int &,const float &);
+	Matrix divide_row(const int &,const float &);
+	Matrix sub_two_rows(const int &,const int &);
 public:
 	Matrix();
 	Matrix(int R, int C);
@@ -29,9 +32,9 @@ public:
 	bool operator==(const Matrix& M)const;
 	Matrix operator!()const;//transpose
 	Matrix operator*(const Matrix &M)const;//this*M;
-// 	Matrix operator~();//inverse of a 2 by 2 matrix
-// 	Matrix operator/(Matrix M);//A/M=A inv B
-// 	Matrix operator/=(Matrix M);
+	Matrix operator~()const;//inverse of a 2 by 2 matrix
+	Matrix operator/(const Matrix &M)const;//A/M=A inv B
+	void operator/=(const Matrix &M);
 	const Matrix operator--(int);
 	const Matrix operator++(int);
 	Matrix RotateCW();
