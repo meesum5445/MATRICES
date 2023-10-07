@@ -7,10 +7,10 @@ Matrix::Matrix()
 Matrix::Matrix(int R, int C)
 {
     this->rows=R;this->cols=C;
-    this->Vs=new int*[rows];
+    this->Vs=new float*[rows];
     for(int i=0;i<this->rows;i++)
     {
-        this->Vs[i]=new int[cols];
+        this->Vs[i]=new float[cols];
     }
 }
 void Matrix::DeleteMatrix()
@@ -26,10 +26,10 @@ void Matrix::DeleteMatrix()
 void Matrix::Allocate2D(int R, int C)
 {
     this->rows=R;this->cols=C;
-    this->Vs=new int*[this->rows];
+    this->Vs=new float*[this->rows];
     for(int i=0;i<this->rows;i++)
     {
-        this->Vs[i]=new int[cols];
+        this->Vs[i]=new float[cols]{};
     }
 }
 void Matrix::LoadMatrix(ifstream& Rdr)
@@ -230,7 +230,7 @@ Matrix Matrix::operator*(const Matrix &M)const
     {
         for(int j=0;j<M.cols;j++)
         {
-            int sum=0;
+            float sum=0;
             for(int k=0;k<this->cols;k++)
             {
                 sum+=(this->Vs[i][k]*M.Vs[k][j]);
@@ -296,4 +296,77 @@ Matrix Matrix::RotateACWMult(int multiple)
         res=res.RotateACW();
     }
     return res;
+}
+Matrix Matrix::operator/(const Matrix &M)const
+{
+    return (*this)*(~M);
+}
+void Matrix::operator/=(const Matrix &M)
+{
+    *this=*this/M;
+}
+Matrix Matrix::multiply_row(const int & row,const float & num)
+{
+    Matrix temp=*this;
+    for(int i=0;i<this->rows;i++)
+    {
+        temp.Vs[row][i]*=num;
+    }
+    return temp;
+}
+Matrix Matrix::divide_row(const int & row,const float & num)
+{
+    Matrix temp=*this;
+    for(int i=0;i<this->rows;i++)
+    {
+        temp.Vs[row][i]/=num;
+    }
+    return temp;
+}
+Matrix Matrix::sub_two_rows(const int & a,const int & b)
+{
+    Matrix temp=*this;
+    for(int i=0;i<this->cols;i++)
+    {
+        temp.Vs[a][i]-=temp.Vs[b][i];
+    }
+    return temp;
+}
+Matrix Matrix::operator~()const
+{
+    Matrix inverse;
+    inverse.Allocate2D(this->rows,this->cols);
+    for(int i=0;i<inverse.rows;i++)   
+        inverse.Vs[i][i]=1;
+    Matrix Rechelon=*this;
+    for(int c=0;c<Rechelon.cols;c++)
+    {
+        if(Rechelon.Vs[c][c]!=0)
+            inverse=inverse.divide_row(c,Rechelon.Vs[c][c]);
+        else
+        {
+            inverse.DeleteMatrix();
+            return inverse;
+        }
+        Rechelon=Rechelon.divide_row(c,Rechelon.Vs[c][c]);
+        for(int r=0;r<Rechelon.rows;r++)
+        {
+            if(r!=c && Rechelon.Vs[r][c]!=0)
+            {
+                float num=Rechelon.Vs[r][c];
+                Rechelon=Rechelon.multiply_row(c,num);
+                inverse=inverse.multiply_row(c,num);
+                //..............
+                Rechelon=Rechelon.sub_two_rows(r,c);
+                inverse=inverse.sub_two_rows(r,c);
+                //..............
+                Rechelon=Rechelon.divide_row(c,num);
+                inverse=inverse.divide_row(c,num);
+                
+            }
+                
+        }    
+    }
+    
+    return inverse;
 }
