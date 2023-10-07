@@ -28,9 +28,9 @@ public:
 	Matrix operator /(const float &s)const;
 	Matrix operator*(const int &s)const;
 	Matrix operator +(const int &s)const;
-	Matrix operator -()const;//
+	Matrix operator -()const;
 	bool operator==(const Matrix& M)const;
-	Matrix operator!()const;//transpose
+	Matrix operator!()const;
 	Matrix operator*(const Matrix &M)const;
 	Matrix operator~()const;
 	Matrix operator/(const Matrix &M)const;
