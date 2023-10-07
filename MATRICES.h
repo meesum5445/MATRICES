@@ -24,16 +24,16 @@ public:
 	void operator+=(const Matrix& M);
 	Matrix operator-(const Matrix& M)const;
 	void operator -=(const Matrix& M);
-	Matrix operator-(const int &s)const;//scalar subtraction
-	Matrix operator /(const float &s)const;//scalar division
-	Matrix operator*(const int &s)const;//scalar multiplication
-	Matrix operator +(const int &s)const;//scalar addition
+	Matrix operator-(const int &s)const;
+	Matrix operator /(const float &s)const;
+	Matrix operator*(const int &s)const;
+	Matrix operator +(const int &s)const;
 	Matrix operator -()const;//
 	bool operator==(const Matrix& M)const;
 	Matrix operator!()const;//transpose
-	Matrix operator*(const Matrix &M)const;//this*M;
-	Matrix operator~()const;//inverse of a 2 by 2 matrix
-	Matrix operator/(const Matrix &M)const;//A/M=A inv B
+	Matrix operator*(const Matrix &M)const;
+	Matrix operator~()const;
+	Matrix operator/(const Matrix &M)const;
 	void operator/=(const Matrix &M);
 	const Matrix operator--(int);
 	const Matrix operator++(int);
